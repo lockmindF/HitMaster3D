@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public bool isStart = false;
     public bool isRun = false;
+    public bool isShoot = false;
     public GameObject[] waypoints;
     int current = 0;
     float rotSpeed;
@@ -22,26 +23,37 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetMouseButtonDown(0))
+        if (isStart == false)
         {
-            isRun = true;
-            anim.SetBool("isRun", true);
-            NextWayPoint();
-
-
+            if (Input.GetMouseButtonDown(0))
+            {
+                isRun = true;
+                isStart = true;
+                anim.SetBool("isRun", true);
+                anim.SetBool("isStart", true);
+            }
         }
-        
 
-    }
-    void NextWayPoint()
-    {
+        
         if (isRun == true)
         {
             
             player.transform.position = Vector3.MoveTowards(player.transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
+            if (player.position == waypoints[current].transform.position)
+            {
+                current++;
+                isShoot = true;
+                isRun = false;
+                anim.SetBool("isRun", false);
+                anim.SetBool("isShoot", true);
+            }
             
         }
+
+    }
+    void NextWayPoint()
+    {
+
 
     }
 }
