@@ -15,8 +15,8 @@ public class Bullet : MonoBehaviour
     {
         
     }
-    public void BulletShoot(RaycastHit hit)
+    private void OnCollisionEnter(Collision collision)
     {
-        transform.Translate(hit.point.x, hit.point.y, hit.point.z);
+        Destroy(this.gameObject);
     }
 }

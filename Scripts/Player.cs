@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     public Rigidbody rbBullet;
     public int count = 3;
     public Transform mainCamera;
+    public Transform bulletSpawn;
 
     // Start is called before the first frame update
     void Start()
@@ -91,14 +92,16 @@ public class Player : MonoBehaviour
         camera.transform.position = Vector3.MoveTowards(camera.transform.position, camShootPoint.transform.position, Time.deltaTime * speed);
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1)); // создание луча из точки нажатия мыши на экран, 1 z можно менять, если положение получается не корректным
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, bulletSpawn.position.z)); // создание луча из точки нажатия мыши на экран, 1 z можно менять, если положение получается не корректным
             RaycastHit hit; // контейнер для результата столкновения луча с мешем
 
             if (Physics.Raycast(ray, out hit)) // пускаем луч
             {
                 
-                GameObject b = Instantiate(bullet, new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z -5f), Quaternion.identity);
-                b.GetComponent<Rigidbody>().AddForce(Vector3.forward * Power, ForceMode.Impulse);
+                //GameObject b = Instantiate(bullet, new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z -5f), Quaternion.identity);
+                GameObject b = Instantiate(bullet, new Vector3(bulletSpawn.position.x, bulletSpawn.position.y, bulletSpawn.position.z), Quaternion.identity);
+               // b.transform.position = Vector3.MoveTowards(b.transform.position, new Vector3 (hit.point.x, hit.point.y,hit.point.z), Time.deltaTime * speed);
+                b.GetComponent<Rigidbody>().AddForce(new Vector3(hit.point.x/7, hit.point.y/7, 1)* Power, ForceMode.Impulse);
             }
             if (isShooting == true)
             {

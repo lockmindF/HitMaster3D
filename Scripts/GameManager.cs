@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
         if (enemyCount == 0)
         {
             FindObjectOfType<Player>().EnemyKill();
+            FindObjectOfType<Wall>().WallAnimation();
+
         }
      }
 }

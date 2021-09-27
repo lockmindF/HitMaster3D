@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
         if (currentHealth == 0)
         {
             anim.SetBool("isDead", true);
+            
             FindObjectOfType<GameManager>().EnemyKill();
 
         }
