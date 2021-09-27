@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public bool isStart = false;
     public bool isRun = false;
     public bool isShoot = false;
+    public bool isShooting = true;
     public GameObject[] waypoints;
     int current = 0;
     float rotSpeed;
@@ -61,17 +62,30 @@ public class Player : MonoBehaviour
             anim.SetBool("isRun", false);
             anim.SetBool("isShoot", true);
 
+
         }
     }
     void Shoot()
     {
-        anim.SetBool("isShoot", false);
+        
         camera.transform.position = Vector3.MoveTowards(camera.transform.position, camShootPoint.transform.position, Time.deltaTime * speed);
         if (Input.GetMouseButtonDown(0))
         {
-            anim.SetBool("isShoot", true);
+            if (isShooting == true)
+            {
+                anim.SetBool("isShooting", false);
+                isShooting = false;
+            }
+            else 
+            {
+                anim.SetBool("isShooting", true);
+                isShooting = true;
+            }
             
+            
+
         }
+        
 
     }
 }
