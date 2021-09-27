@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public bool isShoot = false;
     public bool isShooting = true;
     public GameObject[] waypoints;
-    int current = 0;
+    public int current = 0;
     float rotSpeed;
     public float speed;
     float Wradius = 1;
@@ -17,10 +17,17 @@ public class Player : MonoBehaviour
     public Animator anim;
     public Camera camera;
     public GameObject camShootPoint;
+    public GameObject bullet;
+    public float Power;
+    public Rigidbody rbBullet;
+    public int count = 3;
+    public Transform mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        mainCamera.transform.position = camera.transform.position;
     }
 
     // Update is called once per frame
@@ -38,29 +45,42 @@ public class Player : MonoBehaviour
         }
 
         
-        if (isRun == true)
+        if (isRun == true && player.transform.position != waypoints[current].transform.position)
         {
 
             Run();
             
         }
-        if (isShoot == true)
+        if (isShoot == true && isRun == false)
         {
             Shoot();
         }
 
+        
+
 
     }
-    void Run()
+    public void EnemyKill()
     {
-        player.transform.position = Vector3.MoveTowards(player.transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
+
+        isRun = true;
+        isShoot = false;
+        anim.SetBool("isRun", true);
+        anim.SetBool("isShoot", false);
+       
+    }
+    public void Run()
+    {
+        camera.transform.position = Vector3.MoveTowards(camera.transform.position, mainCamera.transform.position, Time.deltaTime * speed);
+        transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
         if (player.position == waypoints[current].transform.position)
         {
-            current++;
+            
             isShoot = true;
             isRun = false;
             anim.SetBool("isRun", false);
             anim.SetBool("isShoot", true);
+            current++;
 
 
         }
@@ -71,6 +91,15 @@ public class Player : MonoBehaviour
         camera.transform.position = Vector3.MoveTowards(camera.transform.position, camShootPoint.transform.position, Time.deltaTime * speed);
         if (Input.GetMouseButtonDown(0))
         {
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1)); // создание луча из точки нажатия мыши на экран, 1 z можно менять, если положение получается не корректным
+            RaycastHit hit; // контейнер для результата столкновения луча с мешем
+
+            if (Physics.Raycast(ray, out hit)) // пускаем луч
+            {
+                
+                GameObject b = Instantiate(bullet, new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z -5f), Quaternion.identity);
+                b.GetComponent<Rigidbody>().AddForce(Vector3.forward * Power, ForceMode.Impulse);
+            }
             if (isShooting == true)
             {
                 anim.SetBool("isShooting", false);
