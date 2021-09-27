@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     float Wradius = 1;
     public Transform player;
     public Animator anim;
+    public Camera camera;
+    public GameObject camShootPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,23 +39,39 @@ public class Player : MonoBehaviour
         
         if (isRun == true)
         {
-            
-            player.transform.position = Vector3.MoveTowards(player.transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
-            if (player.position == waypoints[current].transform.position)
-            {
-                current++;
-                isShoot = true;
-                isRun = false;
-                anim.SetBool("isRun", false);
-                anim.SetBool("isShoot", true);
-            }
+
+            Run();
             
         }
+        if (isShoot == true)
+        {
+            Shoot();
+        }
+
 
     }
-    void NextWayPoint()
+    void Run()
     {
+        player.transform.position = Vector3.MoveTowards(player.transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
+        if (player.position == waypoints[current].transform.position)
+        {
+            current++;
+            isShoot = true;
+            isRun = false;
+            anim.SetBool("isRun", false);
+            anim.SetBool("isShoot", true);
 
+        }
+    }
+    void Shoot()
+    {
+        anim.SetBool("isShoot", false);
+        camera.transform.position = Vector3.MoveTowards(camera.transform.position, camShootPoint.transform.position, Time.deltaTime * speed);
+        if (Input.GetMouseButtonDown(0))
+        {
+            anim.SetBool("isShoot", true);
+            
+        }
 
     }
 }
