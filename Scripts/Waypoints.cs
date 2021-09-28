@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Waypoints : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject[] waypoints;
     int current = 0;
     float rotSpeed;

@@ -1,19 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool start = false;
+    public bool finish = false;
+    public GameObject finishUI;
+    public GameObject startUI;
     private int enemyCount = 3;
-    // Start is called before the first frame update
     void Start()
     {
-        
+        finishUI.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
+    { 
+        if (Input.GetMouseButtonDown(0) && start == false)
+        {
+
+            FindObjectOfType<Player>().StartGame();
+            start = true;
+            finishUI.SetActive(false);
+            startUI.SetActive(false);
+        }
+        if (Input.GetMouseButtonDown(0) && finish == true)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        }
+    }
+    public void LevelCompleted()
     {
+        finishUI.SetActive(true);
+        finish = true;
+        
         
     }
     public void EnemyKill()
@@ -26,4 +48,5 @@ public class GameManager : MonoBehaviour
 
         }
      }
+
 }
