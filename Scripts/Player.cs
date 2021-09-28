@@ -83,16 +83,14 @@ public class Player : MonoBehaviour
             
         }
         
-        {
-
-        }
+        
     }
     void Shoot()
     {
         camera.transform.position = Vector3.MoveTowards(camera.transform.position, camShootPoint.transform.position, Time.deltaTime * speed);
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, bulletSpawn.position.z));
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))

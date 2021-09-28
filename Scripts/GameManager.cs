@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0) && finish == true)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         }
     }
